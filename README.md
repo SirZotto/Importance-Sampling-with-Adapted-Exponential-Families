@@ -21,10 +21,9 @@ $$
 \qquad X^{(m)} \sim \bar p.
 $$
 
-By the strong law of large numbers,
-
+By the strong law of large numbers for $M\to\infty$  ,
 $$
-\mu_f^{(M)} \rightlongarrow[M\to\infty] \mu_f \text{ a.s.}.
+\mu_f^{(M)} \rightarrow \mu_f \text{ a.s.}.
 $$
 
 However, the variance of this estimator can be large, especially for rare-event or path-dependent problems. Importance Sampling tries to reduce this variance by sampling from another density $q$ instead of $\bar p$.
