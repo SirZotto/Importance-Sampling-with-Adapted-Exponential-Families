@@ -1,5 +1,10 @@
 # Importance-Sampling-with-Adapted-Exponential-Families
 This Repository has the Code my Bachelors Thesis "Importance Sampling with Adapted Exponential Families".  All Information can be read in the thesis itself and some summery is down below.
+
+## Important Code 
+`class_IS_optimizer.py` and `class_natural_parameter.py` are the heart of this project. The best example on how to use them is `example_BlackScholes_Asian_Spread_Call.ipynb`.
+Down below is now a summery of the theory and some notes on how to use the code.
+
 # Importance Sampling with Adapted Exponential Families
 
 This repository implements an Importance Sampling (IS) framework based on **adapted exponential families**. The goal is to approximate expectations of path-dependent functionals
@@ -144,6 +149,17 @@ $$
 I(X)=\frac{\bar p(X)}{q(X\mid z)}.
 $$
 
+## Defining the Natural Parameter
+
+The thesis explains how the natural parameter is defined in more detail. See chapter 4.3 "Creating an Adapted Exponential Family for IS" (page 29 to be more accurate). 
+
+## Code Implementation Natural Parameter: 
+
+`class_natural_parameter_components.py` allows us to define the natural parameter $z$ accordingly. In `example_BlackScholes_Asian_Spread_Call.ipynb` we can see under `list_of_z = natural_parameter_definer(typ="stdNormal", beta=5).create_z_normal(d, S, combination_typ="mean_in_typ")` that the natural parameter is fully defined as a list of functions which take the samples, ie
+$$
+z^{(s)}=z^{(s)}(X_1,\dots,X_{s-1}).
+$$
+
 ## Variance Optimization
 
 The variance-reduction problem can be formulated through the second moment
@@ -207,6 +223,11 @@ $$
 
 The convexity of this objective follows from the convexity of the log-partition function $A$ and the exponential structure of the family.
 
+## Code Implementation Natural Parameter: 
+
+`class_IS_optimizer.py` to find the best $\alpha$ and therefore the best adapted exponential family $q$. In `example_BlackScholes_Asian_Spread_Call.ipynb` we can see under `opti = IS_optimizer(list_of_z, samples_test, p_joint, f)` what inputs are required and how to to use it.
+
+
 ## Algorithmic Structure
 
 The implemented workflow is:
@@ -256,8 +277,9 @@ For this model, the adapted exponential family is based on a multivariate normal
 
 The second model uses exponential distributions in the context of a Poisson-process-related example. The results are more mixed. In particular, the performance can deteriorate for larger values of $S$, suggesting that the quality of the adapted density is strongly problem-dependent.
 
-## Main Takeaway
+## Main Takeaway and Intuitive Idea
 
 This project explores Importance Sampling with adapted exponential families as a flexible variance-reduction method for path-dependent Monte Carlo problems. The central idea is to replace a fixed importance density by a sequentially adapted one, where the natural parameter at time $s$ may depend on the previously sampled values.
 
-The method is especially promising when the adapted natural parameter captures useful path information. The Black-Scholes example shows that this approach can improve the standard Monte Carlo estimator. However, the Poisson-process example also shows that adaptation alone does not guarantee improvement; the choice of exponential family, sufficient statistic, and natural-parameter structure is crucial.
+In my head this method allows also to weigh the samples in there importance. For example, consider the $X_1,...,X_5 \sim N(0,1)$ iid, then $x_1, x_2, x_3, x_4 \in [100,200]$ would be highly unlikely and could corrupt the end result, ie the sample vector $(x_1,...x_5)$ is most likely just bad, even before we know what $x_5$ is. So what if we punish such behavior by constructing $z$ so that the sample vector $(x_1,...x_5)$ has (almost) no weight when producing such bad results, fe choose $z^{(5)}$ such that $z^{(5)}(x_1,...,x_4)$ has no impact on the approximation.
+For course all that needs more experimentation and research.
