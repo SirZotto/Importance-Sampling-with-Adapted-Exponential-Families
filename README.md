@@ -1,5 +1,5 @@
 # Importance-Sampling-with-Adapted-Exponential-Families
-This Repository has the Code my Bachelors Thesis "Importance Sampling with Adapted Exponential Families".  All Information can be read in the thesis itself.
+This Repository has the Code my Bachelors Thesis "Importance Sampling with Adapted Exponential Families".  All Information can be read in the thesis itself and some summery is down below.
 # Importance Sampling with Adapted Exponential Families
 
 This repository implements an Importance Sampling (IS) framework based on **adapted exponential families**. The goal is to approximate expectations of path-dependent functionals
@@ -11,7 +11,7 @@ $$
 where
 
 $$
-X := (X_1,\dots,X_S), \qquad X_s \in \mathbb{R}^d,
+X := (X_1,\dots,X_S), \qquad X_s \in \mathbb{R}^d \quad \forall s =1,...,S ,
 $$
 
 and $\bar p$ denotes the original sampling density of the full path $X$. A standard Monte Carlo estimator is given by
@@ -24,24 +24,20 @@ $$
 By the strong law of large numbers,
 
 $$
-\mu_f^{(M)} \xrightarrow[M\to\infty]{a.s.} \mu_f.
+\mu_f^{(M)} \rightlongarrow[M\to\infty] \mu_f \text{ a.s.}.
 $$
 
 However, the variance of this estimator can be large, especially for rare-event or path-dependent problems. Importance Sampling tries to reduce this variance by sampling from another density $q$ instead of $\bar p$.
 
 ## Importance Sampling
 
-Let $q$ be an importance density such that
-
-$$
-q(x) > 0 \quad \text{whenever} \quad \bar p(x)f(x) \neq 0.
-$$
+Let $q$ be an importance density such that it is viable wrt to $\bar p$
 
 Then
 
 $$
 \mu_f
-= \int f(x)\bar p(x)\,dx
+= \int f(x)\bar p(x)dx
 = \int f(x)\frac{\bar p(x)}{q(x)}q(x)\,dx
 = \mathbb{E}_q\left[I(X)f(X)\right],
 $$
@@ -63,32 +59,23 @@ $$
 Both $\mu_f^{(M)}$ and $\mu_{f,I}^{(M)}$ estimate the same expectation $\mu_f$, but their variances are generally different. The objective is therefore to choose $q$ such that
 
 $$
-\operatorname{Var}_q(\mu_{f,I}^{(M)})
+Var_q(\mu_{f,I}^{(M)})
 \leq
-\operatorname{Var}_{\bar p}(\mu_f^{(M)}).
+Var_{\bar p}(\mu_f^{(M)}).
 $$
-
-For non-negative $f$, the theoretically optimal importance density is
-
-$$
-q^*(x) = \frac{f(x)\bar p(x)}{\mu_f},
-$$
-
-but this is usually not usable in practice because it depends on the unknown quantity $\mu_f$. Therefore, this project searches for good importance densities inside a tractable class of adapted exponential families.
+ie we want to minimize the variance.
 
 ## Exponential Families
 
 A basic exponential family has densities of the form
 
 $$
-g(x \mid z)
-=
-g_0(x)\exp\left(z^\top T(x) - A(z)\right),
+q(x \mid z)=q_0(x)\exp\left(z^\top T(x) - A(z)\right),
 $$
 
 where
 
-- $g_0$ is the base density,
+- $q_0$ is the base density,
 - $T(x)$ is the sufficient statistic,
 - $z$ is the natural parameter,
 - $A(z)$ is the log-partition function,
@@ -96,17 +83,13 @@ where
 with
 
 $$
-A(z)
-=
-\log\left(
-\int g_0(x)\exp(z^\top T(x))\,dx
-\right).
+A(z)=\log\left(\int q_0(x)\exp(z^\top T(x))dx\right).
 $$
 
 The function $A(z)$ normalizes the density, i.e.
 
 $$
-\int g(x\mid z)\,dx = 1.
+\int g(x\mid z)dx = 1.
 $$
 
 ## Adapted Exponential Families
@@ -126,22 +109,13 @@ $$
 An adapted exponential family is constructed as
 
 $$
-q(x\mid z)
-=
-\prod_{s=1}^S q^{(s)}(x_s \mid z^{(s)}),
+q(x\mid z)=\prod_{s=1}^S q^{(s)}(x_s \mid z^{(s)}),
 $$
 
 where each component has exponential-family form
 
 $$
-q^{(s)}(x_s \mid z^{(s)})
-=
-q_0^{(s)}(x_s)
-\exp\left(
-(z^{(s)})^\top T^{(s)}(x_s)
--
-A^{(s)}(z^{(s)})
-\right).
+q^{(s)}(x_s \mid z^{(s)})=q_0^{(s)}(x_s)\exp\left((z^{(s)})^\top T^{(s)}(x_s)-A^{(s)}(z^{(s)})\right).
 $$
 
 The key adaptation condition is that
@@ -153,9 +127,7 @@ $$
 Equivalently,
 
 $$
-z^{(s)}
-=
-z^{(s)}(X_1,\dots,X_{s-1}).
+z^{(s)}=z^{(s)}(X_1,\dots,X_{s-1}).
 $$
 
 Thus, the natural parameter used to sample $X_s$ may depend on the previously sampled values $X_1,\dots,X_{s-1}$, but not on the current or future values. In particular, $z^{(1)}$ is deterministic because $\mathcal{F}_0$ is trivial.
@@ -170,9 +142,7 @@ This gives a sequential importance sampler:
 6. Compute the likelihood ratio
 
 $$
-I(X)
-=
-\frac{\bar p(X)}{q(X\mid z)}.
+I(X)=\frac{\bar p(X)}{q(X\mid z)}.
 $$
 
 ## Variance Optimization
@@ -180,8 +150,7 @@ $$
 The variance-reduction problem can be formulated through the second moment
 
 $$
-\mathbb{E}_q\left[
-\left(
+\mathbb{E}_q\left[\left(
 \frac{\bar p(X)}{q(X\mid z)}f(X)
 \right)^2
 \right].
@@ -234,15 +203,7 @@ where $\mathcal{A}$ is chosen to be convex.
 The density used in the objective is
 
 $$
-q(X^{(m)}\mid z_\alpha)
-=
-q_0(X^{(m)})
-\exp\left(
-\sum_{s=1}^S
-(z_\alpha^{(s)})^\top T^{(s)}(X_s^{(m)})
--
-A^{(s)}(z_\alpha^{(s)})
-\right).
+q(X^{(m)}\mid z_\alpha)=q_0(X^{(m)})\exp\left(\sum_{s=1}^S(z_\alpha^{(s)})^\top T^{(s)}(X_s^{(m)})-A^{(s)}(z_\alpha^{(s)})\right).
 $$
 
 The convexity of this objective follows from the convexity of the log-partition function $A$ and the exponential structure of the family.
@@ -285,13 +246,7 @@ The framework is tested on two main examples.
 The first model applies the method to a Black-Scholes setting with a path-dependent Asian spread call payoff. The payoff has the form
 
 $$
-f(X)
-=
-e^{-rT}
-\max\left(
-0,
-\bar S_1 - \bar S_2 - K
-\right),
+f(X)=e^{-rT}\max\left(0,\bar S_1 - \bar S_2 - K\right),
 $$
 
 where $\bar S_1$ and $\bar S_2$ are arithmetic averages of two simulated asset paths.
