@@ -26,7 +26,8 @@ $$
 \qquad X^{(m)} \sim \bar p.
 $$
 
-By the strong law of large numbers for $M\to\infty$  ,
+By the strong law of large numbers for $M\to\infty$,
+
 $$
 \mu_f^{(M)} \rightarrow \mu_f \text{ a.s.}.
 $$
@@ -63,10 +64,9 @@ $$
 Both $\mu_f^{(M)}$ and $\mu_{f,I}^{(M)}$ estimate the same expectation $\mu_f$, but their variances are generally different. The objective is therefore to choose $q$ such that
 
 $$
-Var_q(\mu_{f,I}^{(M)})
-\leq
-Var_{\bar p}(\mu_f^{(M)}).
+Var_q(\mu_{f,I}^{(M)}) \leq Var_{\bar p}(\mu_f^{(M)}).
 $$
+
 ie we want to minimize the variance.
 
 ## Exponential Families
