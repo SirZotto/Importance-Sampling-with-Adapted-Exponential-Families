@@ -156,9 +156,13 @@ The thesis explains how the natural parameter is defined in more detail. See cha
 ## Code Implementation Natural Parameter: 
 
 `class_natural_parameter_components.py` allows us to define the natural parameter $z$ accordingly. In `example_BlackScholes_Asian_Spread_Call.ipynb` we can see under `list_of_z = natural_parameter_definer(typ="stdNormal", beta=5).create_z_normal(d, S, combination_typ="mean_in_typ")` that the natural parameter is fully defined as a list of functions which take the samples, ie
+
 $$
 z^{(s)}=z^{(s)}(X_1,\dots,X_{s-1}).
 $$
+
+It is to note that inputs `typ` and `combination_typ` are better explained in the thesis, but to summerize, it basically builds the natural parameter. In this case:
+
 
 ## Variance Optimization
 
