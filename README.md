@@ -164,7 +164,14 @@ $$
 It is to note that inputs `typ` and `combination_typ` are better explained in the thesis, but to summerize, it basically builds the natural parameter. In this case, `typ="stdNormal"` and `combination_typ="mean_in_typ"` means that
 
 $$
-z^{(s)} = F( \text{mean}(x_1,...,x_{s-1})) \qquad \forall s
+z^{(s)}
+=
+\left(
+F\left(\operatorname{mean}(x_{1,1},\ldots,x_{s-1,1})\right),
+\ldots,
+F\left(\operatorname{mean}(x_{1,d},\ldots,x_{s-1,d})\right)
+\right)
+ \qquad \forall s
 $$
 
 where $F: x \mapsto \text{standardNormal(x,beta)}$ with
