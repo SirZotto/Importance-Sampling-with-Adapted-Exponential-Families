@@ -161,7 +161,19 @@ $$
 z^{(s)}=z^{(s)}(X_1,\dots,X_{s-1}).
 $$
 
-It is to note that inputs `typ` and `combination_typ` are better explained in the thesis, but to summerize, it basically builds the natural parameter. In this case:
+It is to note that inputs `typ` and `combination_typ` are better explained in the thesis, but to summerize, it basically builds the natural parameter. In this case, `typ="stdNormal"` and `combination_typ="mean_in_typ"` means that
+
+$$
+z^{(s)} = F( \text{mean}(x_1,...,x_{s-1})) \qquad \forall s
+$$
+
+where $F: x \mapsto \text{standardNormal(x,beta)}$ with
+
+>def standardNormal(x,beta):
+>    if x >= -beta and x<= beta:
+>        return norm.pdf(x)
+>    else:
+>       return norm.pdf(beta)
 
 
 ## Variance Optimization
