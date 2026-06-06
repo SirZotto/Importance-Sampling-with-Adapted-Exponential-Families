@@ -93,7 +93,7 @@ $$
 The function $A(z)$ normalizes the density, i.e.
 
 $$
-\int g(x\mid z)dx = 1.
+\int q(x\mid z)dx = 1.
 $$
 
 ## Adapted Exponential Families
