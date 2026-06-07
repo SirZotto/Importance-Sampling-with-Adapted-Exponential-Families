@@ -136,18 +136,14 @@ $$
 
 Thus, the natural parameter used to sample $X_s$ may depend on the previously sampled values $X_1,\dots,X_{s-1}$, but not on the current or future values. In particular, $z^{(1)}$ is deterministic because $\mathcal{F}_0$ is trivial.
 
-This gives a sequential importance sampler:
+This gives a sequential way of sampling:
 
 1. Choose $z^{(1)}$.
 2. Sample $X_1 \sim q^{(1)}(\cdot \mid z^{(1)})$.
 3. Compute $z^{(2)}(X_1)$.
 4. Sample $X_2 \sim q^{(2)}(\cdot \mid z^{(2)}(X_1))$.
 5. Continue until $X_S$ is sampled.
-6. Compute the likelihood ratio
 
-$$
-I(X)=\frac{\bar p(X)}{q(X\mid z)}.
-$$
 
 ## Defining the Natural Parameter
 
