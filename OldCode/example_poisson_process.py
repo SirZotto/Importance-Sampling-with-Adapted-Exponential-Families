@@ -1,5 +1,5 @@
-from class_IS_optimizer import IS_optimizer
-from class_natural_parameter_components import natural_parameter_definer
+from OldCode.class_IS_optimizerptimizer import IS_optimizer
+from OldCode.class_natural_parameter_components import natural_parameter_definer
 import numpy as np
 from scipy.stats import expon
 

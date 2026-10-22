@@ -283,3 +283,7 @@ This project explores Importance Sampling with adapted exponential families as a
 
 In my head this method allows also to weigh the samples in there importance. For example, consider the $X_1,...,X_5 \sim N(0,1)$ iid, then $x_1, x_2, x_3, x_4 \in [100,200]$ would be highly unlikely and could corrupt the end result, ie the sample vector $(x_1,...x_5)$ is most likely just bad, even before we know what $x_5$ is. So what if we punish such behavior by constructing $z$ so that the sample vector $(x_1,...x_5)$ has (almost) no weight when producing such bad results, fe choose $z^{(5)}$ such that $z^{(5)}(x_1,...,x_4)$ has no impact on the approximation.
 For course all that needs more experimentation and research.
+
+
+# Editorial edits:
+please consider the folder Tests to see what the code can do
