@@ -26,7 +26,8 @@ $$
 \qquad X^{(m)} \sim \bar p.
 $$
 
-By the strong law of large numbers for $M\to\infty$  ,
+By the strong law of large numbers for $M\to\infty$,
+
 $$
 \mu_f^{(M)} \rightarrow \mu_f \text{ a.s.}.
 $$
@@ -63,10 +64,9 @@ $$
 Both $\mu_f^{(M)}$ and $\mu_{f,I}^{(M)}$ estimate the same expectation $\mu_f$, but their variances are generally different. The objective is therefore to choose $q$ such that
 
 $$
-Var_q(\mu_{f,I}^{(M)})
-\leq
-Var_{\bar p}(\mu_f^{(M)}).
+Var_q(\mu_{f,I}^{(M)}) \leq Var_{\bar p}(\mu_f^{(M)}).
 $$
+
 ie we want to minimize the variance.
 
 ## Exponential Families
@@ -93,7 +93,7 @@ $$
 The function $A(z)$ normalizes the density, i.e.
 
 $$
-\int g(x\mid z)dx = 1.
+\int q(x\mid z)dx = 1.
 $$
 
 ## Adapted Exponential Families
@@ -136,18 +136,14 @@ $$
 
 Thus, the natural parameter used to sample $X_s$ may depend on the previously sampled values $X_1,\dots,X_{s-1}$, but not on the current or future values. In particular, $z^{(1)}$ is deterministic because $\mathcal{F}_0$ is trivial.
 
-This gives a sequential importance sampler:
+This gives a sequential way of sampling:
 
 1. Choose $z^{(1)}$.
 2. Sample $X_1 \sim q^{(1)}(\cdot \mid z^{(1)})$.
 3. Compute $z^{(2)}(X_1)$.
 4. Sample $X_2 \sim q^{(2)}(\cdot \mid z^{(2)}(X_1))$.
 5. Continue until $X_S$ is sampled.
-6. Compute the likelihood ratio
 
-$$
-I(X)=\frac{\bar p(X)}{q(X\mid z)}.
-$$
 
 ## Defining the Natural Parameter
 
@@ -156,9 +152,25 @@ The thesis explains how the natural parameter is defined in more detail. See cha
 ## Code Implementation Natural Parameter: 
 
 `class_natural_parameter_components.py` allows us to define the natural parameter $z$ accordingly. In `example_BlackScholes_Asian_Spread_Call.ipynb` we can see under `list_of_z = natural_parameter_definer(typ="stdNormal", beta=5).create_z_normal(d, S, combination_typ="mean_in_typ")` that the natural parameter is fully defined as a list of functions which take the samples, ie
+
 $$
 z^{(s)}=z^{(s)}(X_1,\dots,X_{s-1}).
 $$
+
+It is to note that inputs `typ` and `combination_typ` are better explained in the thesis, but to summerize, it basically builds the natural parameter. In this case, `typ="stdNormal"` and `combination_typ="mean_in_typ"` means that
+
+$$
+z^{(s)}=\left(N\left(\text{mean}(x_{1,1},\ldots,x_{s-1,1})\right),\ldots,N\left(\text{mean}(x_{1,d},\ldots,x_{s-1,d})\right)\right)\qquad \forall s
+$$
+
+where $N: x \mapsto \text{standardNormal(x,beta)}$ with
+
+>def standardNormal(x,beta):
+>    if x >= -beta and x<= beta:
+>        return norm.pdf(x)
+>    else:
+>       return norm.pdf(beta)
+
 
 ## Variance Optimization
 
